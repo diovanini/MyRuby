@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Geoespacial Municipal - WebGIS</title>
+
+  <!-- 1. O ATALHO: Importando o Bootstrap 5 direto da nuvem (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* Apenas uma regra CSS para garantir que a área do mapa preencha a tela */
+    #mapa-container {
+      height: calc(100vh - 56px);
+      background-color: #e0f2fe; /* Tom de fundo simulando água/base cartográfica */
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- 2. Barra de Topo Moderna e Responsiva -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand fw-bold" href="#">🗺️ SIGWeb Municipal</a>
+    <span class="badge bg-success ms-auto">Sistema Online</span>
+  </nav>
+
+  <!-- 3. Layout em Grade (Grid do Bootstrap) -->
+  <div class="container-fluid p-0">
+    <div class="row g-0">
+      
+      <!-- Painel Lateral: 3 colunas de largura em telas médias/grandes -->
+      <aside class="col-md-3 bg-white p-3 border-end shadow-sm" style="height: calc(100vh - 56px); overflow-y: auto;">
+        <h5 class="border-bottom pb-2 text-secondary">Camadas Temáticas</h5>
+        
+        <!-- Lista de Camadas estilizada -->
+        <div class="form-check form-switch mb-2">
+          <input class="form-check-input" type="checkbox" id="chk1" checked>
+          <label class="form-check-label" for="chk1">Limites de Bairros</label>
+        </div>
+        <div class="form-check form-switch mb-2">
+          <input class="form-check-input" type="checkbox" id="chk2" checked>
+          <label class="form-check-label" for="chk2">Áreas Verdes e Parques</label>
+        </div>
+        <div class="form-check form-switch mb-2">
+          <input class="form-check-input" type="checkbox" id="chk3">
+          <label class="form-check-label" for="chk3">Rede de Drenagem</label>
+        </div>
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" id="chk4">
+          <label class="form-check-label" for="chk4">Focos de Calor</label>
+        </div>
+
+        <!-- Ações e Ferramentas com botões prontos -->
+        <h5 class="border-bottom pb-2 text-secondary">Ferramentas</h5>
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-primary btn-sm">📏 Medir Distância</button>
+          <button class="btn btn-outline-secondary btn-sm">🔍 Zoom para Extensão</button>
+        </div>
+      </aside>
+
+      <!-- Área do Mapa: 9 colunas de largura -->
+      <main class="col-md-9 d-flex align-items-center justify-content-center" id="mapa-container">
+        <div class="text-center p-4 bg-white rounded-3 shadow-sm border">
+          <h4 class="text-primary mb-2">Área do Mapa Interativo</h4>
+          <p class="text-muted mb-0">Aqui será instanciado o Leaflet no Módulo 4 e 6.</p>
+        </div>
+      </main>
+
+    </div>
+  </div>
+  <footer>
+    <!-- Card de Metadados -->
+        <div class="card mt-4 border-info">
+          <div class="card-body p-2">
+            <h6 class="card-title text-info mb-1" style="font-size: 0.85rem;">Referência Geodésica</h6>
+            <p class="card-text text-muted" style="font-size: 0.75rem;">
+              SIRGAS 2000 / UTM 22S<br>Base Municipal 2026
+            </p>
+          </div>
+        </div>
+  </footer>
+
+</body>
+</html>

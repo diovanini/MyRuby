@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trabalho Prático - WebGIS com Vue.js e GeoJSON</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    #map {
+      height: calc(100vh - 56px);
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- AQUI O VUE ASSUME O CONTROLE DA INTERFACE (id="app") -->
+  <div id="app">
+    <nav class="navbar navbar-dark bg-dark px-3">
+      <a class="navbar-brand fw-bold" href="#">🗺️ {{ tituloPortal }}</a>
+      <span class="badge bg-success ms-auto">{{ statusCamada }}</span>
+    </nav>
+
+    <div class="container-fluid p-0">
+      <div class="row g-0">
+        
+        <!-- Barra Lateral Reativa -->
+        <aside class="col-md-3 bg-white p-3 border-end" style="height: calc(100vh - 56px); overflow-y: auto;">
+          <h5 class="text-secondary border-bottom pb-2">Controles Reativos</h5>
+          
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Filtrar por Categoria / Nome:</label>
+            <!-- O input sincroniza com a variável filtroTexto em tempo real (Two-way binding) -->
+            <input type="text" v-model="filtroTexto" class="form-control form-control-sm" placeholder="Digite para filtrar...">
+          </div>
+
+          <div class="d-grid gap-2 mb-3">
+            <button class="btn btn-outline-primary btn-sm" @click="enquadrarMapa">
+              🎯 Enquadrar Extensão
+            </button>
+          </div>
+
+          <!-- Card de Estatísticas Reativo -->
+          <div class="card border-primary">
+            <div class="card-body p-2">
+              <h6 class="card-title text-primary mb-1" style="font-size: 0.85rem;">Resumo dos Dados</h6>
+              <p class="card-text text-muted mb-0" style="font-size: 0.75rem;">
+                Feições carregadas: <strong>{{ totalFeicoes }}</strong><br>
+                Origem: Exportação do QGIS (EPSG:4326)
+              </p>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Área do Mapa -->
+        <main class="col-md-9 p-0" id="map"></main>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Vue 3 via CDN (Simples e direto, sem instalação prévia) -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          tituloPortal: "Monitoramento Ambiental Municipal",
+          statusCamada: "Carregando vetor...",
+          filtroTexto: "",
+          totalFeicoes: 0,
+          mapaInstancia: null,
+          camadaGeojson: null
+        }
+      },
+      mounted() {
+        // Inicializa o Leaflet assim que o Vue carrega a tela
+        this.mapaInstancia = L.map('map').setView([-1.4558, -48.4902], 12);
+        
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(this.mapaInstancia);
+
+        // Carrega o GeoJSON exportado do QGIS
+        this.carregarGeoJson();
+      },
+      methods: {
+        carregarGeoJson() {
+          // O aluno pode apontar para o arquivo exportado: 'dados/minhas_feicoes.geojson'
+          // Aqui simulamos uma feição poligonal de exemplo:
+          const geojsonExemplo = {
+            "type": "FeatureCollection",
+            "features": [
+              {
+                "type": "Feature",
+                "properties": { "nome": "Bosque Rodrigues Alves", "tipo": "Parque" },
+                "geometry": {
+                  "type": "Polygon",
+                  "coordinates": [[[-48.462, -1.430], [-48.455, -1.430], [-48.455, -1.435], [-48.462, -1.435], [-48.462, -1.430]]]
+                }
+              },
+              {
+                "type": "Feature",
+                "properties": { "nome": "Parque do Utinga", "tipo": "Unidade de Conservacao" },
+                "geometry": {
+                  "type": "Polygon",
+                  "coordinates": [[[-48.442, -1.415], [-48.405, -1.415], [-48.405, -1.445], [-48.442, -1.445], [-48.442, -1.415]]]
+                }
+              }
+            ]
+          };
+
+          this.camadaGeojson = L.geoJSON(geojsonExemplo, {
+            style: { color: "#16a34a", weight: 2, fillColor: "#22c55e", fillOpacity: 0.4 },
+            onEachFeature: (feature, layer) => {
+              layer.bindPopup(`<b>${feature.properties.nome}</b><br>Tipo: ${feature.properties.tipo}`);
+            }
+          }).addTo(this.mapaInstancia);
+
+          this.totalFeicoes = geojsonExemplo.features.length;
+          this.statusCamada = "Vetor Pronto";
+          this.enquadrarMapa();
+        },
+        enquadrarMapa() {
+          if (this.camadaGeojson) {
+            this.mapaInstancia.fitBounds(this.camadaGeojson.getBounds());
+          }
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

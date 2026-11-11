@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemplo de Seletores CSS</title>
+    <style>
+        /* 1. Seletor Universal (Reseta margens de tudo) */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 2. Seletor de Tipo / Tag (Aplica a todos os parágrafos) */
+        p {
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        /* 3. Seletor de Classe (Para elementos reutilizáveis) */
+        .texto-destaque {
+            color: #ff5722;
+            font-weight: bold;
+        }
+
+        /* 4. Seletor de ID (Exclusivo para um único elemento) */
+        #titulo-principal {
+            color: #2196f3;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 5. Seletor de Atributo (Alvo em inputs do tipo text) */
+        input[type="text"] {
+            border: 2px solid #2196f3;
+            padding: 5px;
+        }
+
+        /* 6. Combinador de Filho Direto (Apenas li que são filhos diretos deste ul) */
+        ul.lista-compras > li {
+            list-style-type: square;
+        }
+
+        /* 7. Pseudo-classe (Muda a cor do link ao passar o mouse) */
+        a:hover {
+            color: #4caf50;
+            text-decoration: underline;
+        }
+
+        /* 8. Pseudo-elemento (Estiliza a primeira letra de uma classe) */
+        .paragrafo-especial::first-letter {
+            font-size: 250%;
+            font-weight: bold;
+            color: #9c27b0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="titulo-principal">Bem-vindo ao Guia de CSS</h1>
+    
+    <p>Este é um parágrafo comum estilizado pelo seletor de tag.</p>
+    
+    <p class="texto-destaque">Este parágrafo usa uma classe de destaque.</p>
+    
+    <p class="paragrafo-especial">A primeira letra deste parágrafo é gigante graças a um pseudo-elemento.</p>
+
+    <ul class="lista-compras">
+        <li>Item 1 (Quadrado)</li>
+        <li>Item 2 (Quadrado)</li>
+    </ul>
+
+    <form>
+        <label>Nome:</label>
+        <input type="text" placeholder="Digite seu nome">
+        
+        <label>E-mail:</label>
+        <input type="email" placeholder="Digite seu e-mail">
+    </form>
+
+    <br>
+    <a href="#">Passe o mouse neste link para ver o efeito</a>
+
+</body>
+</html>
